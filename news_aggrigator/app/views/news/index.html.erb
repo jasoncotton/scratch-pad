@@ -1,0 +1,22 @@
+<h1>Listing news</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Url</th>
+      <th>Source</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stories.each_with_index do |news, index| %>
+      <tr>
+        <td><%= news.title %></td>
+        <td><%= news.url %></td>
+        <td><%= news.source %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
