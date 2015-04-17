@@ -1,0 +1,58 @@
+<div class="row-fluid">
+  <div class="col-sm-12">
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Releases</h3>
+  </div>
+  <table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th>Nzb</th>
+      <th>Nfo</th>
+      <th>Sfv</th>
+      <th>Name</th>
+      <th>Size</th>
+      <th>Group</th>
+      <th>Tvshow</th>
+      <th>Movie</th>
+      <th>Episode</th>
+      <th>Posted</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @releases.each do |release| %>
+      <tr>
+        <td><i class="glyphicon glyphicon-ok" data-ng-if="'<%= release.status %>'"></i></td>
+        <td><i class="glyphicon" data-ng-class="{'glyphicon-eye-open': <%= release.unwanted %> === false, 'glyphicon-eye-closed': <%= release.unwanted %> !== false}"></i></td>
+        <td><%= link_to content_tag(:i, nil, {class: 'glyphicon glyphicon-file'}), "nzbs/#{release.nzb_id}" %></td>
+        <td><%= link_to content_tag(:i, nil, {class: 'glyphicon glyphicon-file'}), "nfos/#{release.nfo_id}" %></td>
+        <td><%= link_to content_tag(:i, nil, {class: 'glyphicon glyphicon-file'}), "sfvs/#{release.nfo_id}" %></td>
+        <td>
+          <p>
+            <%= release.name %><br />
+            <small data-ng-bind="'<%= release.passworded %>' !== 'NO' ? '[Pasword Required]' : ''"></small><br />
+            Posted by: <%= release.posted_by %><br />
+            Category: <%= release.category_id %><br />
+            <a href="/regexes/<%= release.regex_id %>"><i class="glyphicon glyphicon-question-sign"></i></a><br />
+            Downloaded: <%= release.grabs %>
+          </p>
+        </td>
+        <td><%= number_to_human_size(release.size) %></td>
+        <td><%= Group.find(release.group_id).name %></td>
+        <td><%= release.tvshow_id %></td>
+        <td><%= release.movie_id %></td>
+        <td><%= release.episode_id %></td>
+        <td><%= release.posted.ago(DateTime.now.to_i) %></td>
+      </tr>
+    <% end %>
+      </tbody>
+      </table>
+      <div class="panel-footer">
+        <%= link_to 'New Release', new_release_path %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Id:</strong>
+  <%= @nzb.id %>
+</p>
+
+<p>
+  <strong>Data:</strong>
+  <%= @nzb.data %>
+</p>
+
+<%= link_to 'Edit', edit_nzb_path(@nzb) %> |
+<%= link_to 'Back', nzbs_path %>

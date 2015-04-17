@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id: 1
+  regex: MyText
+  description: MyString
+  status: false
+  ordinal: 1
+  group_name: MyString
+
+two:
+  id: 1
+  regex: MyText
+  description: MyString
+  status: false
+  ordinal: 1
+  group_name: MyString

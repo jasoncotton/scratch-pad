@@ -1,0 +1,25 @@
+<div class="fluid-container">
+  <div class="col-sm-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= @group.name %></h3>
+      </div>
+      <div class="panel-body">
+        <div class="alert alert-danger" role="alert" data-ng-show="<%= notice.nil? ? 'false' : 'true'  %>"><%= notice %></div>
+        <dl class="dl-horizontal">
+          <dt>Active:</dt>
+          <dd><%= @group.active == true ? content_tag(:i, nil, {class: 'glyphicon glyphicon-ok'}) : '' %></dd>
+          <dt>First:</dt>
+          <dd><%= @group.first %></dd>
+          <dt>Last:</dt>
+          <dd><%= @group.last %></dd>
+          <dt>Regexes:</dt>
+          <dd>...</dd>
+        </dl>
+    </div>
+    <div class="panel-footer">
+<%= link_to 'Back', groups_path %> | <%= link_to 'Edit', edit_group_path(@group) %>
+    </div>
+  </div>
+  </div>
+</div>

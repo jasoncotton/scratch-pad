@@ -1,0 +1,25 @@
+<%= form_for(@nfo) do |f| %>
+  <% if @nfo.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@nfo.errors.count, "error") %> prohibited this nfo from being saved:</h2>
+
+      <ul>
+      <% @nfo.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :id %><br>
+    <%= f.number_field :id %>
+  </div>
+  <div class="field">
+    <%= f.label :data %><br>
+    <%= f.text_area :data %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

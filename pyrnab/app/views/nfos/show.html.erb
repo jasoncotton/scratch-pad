@@ -1,0 +1,16 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Id:</strong>
+  <%= @nfo.id %>
+</p>
+
+<p>
+  <strong>Data:</strong>
+<pre>
+  <%= ActiveSupport::Gzip.decompress(@nfo.data) %>
+</pre>
+</p>
+
+<%= link_to 'Edit', edit_nfo_path(@nfo) %> |
+<%= link_to 'Back', nfos_path %>

@@ -1,0 +1,25 @@
+<%= form_for(@nzb) do |f| %>
+  <% if @nzb.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@nzb.errors.count, "error") %> prohibited this nzb from being saved:</h2>
+
+      <ul>
+      <% @nzb.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :id %><br>
+    <%= f.number_field :id %>
+  </div>
+  <div class="field">
+    <%= f.label :data %><br>
+    <%= f.text_area :data %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

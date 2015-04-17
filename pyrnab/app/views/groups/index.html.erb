@@ -1,0 +1,73 @@
+<script type="text/javascript">
+
+(function () {
+    angular.module('Pynab').
+        controller('GroupListCtrl', ['$scope', '$http', function ($scope, $http) {
+            $scope.setGroupState = function (groupId, isActive, event) {
+                var baseUrl = '/groups/' + groupId + '.json',
+                    parent = angular.element(event.target).parents('tr');
+
+                $http.put(
+                    baseUrl,
+                    {group: {id: groupId, active: !isActive}},
+                    {
+                        headers:
+                        {
+                            "X-CSRF-Token": $("meta[name='csrf-token']").attr("content")
+                        }
+                    }
+                ).then(
+                    function (response) {
+                    }
+                );
+            };
+        }]);
+}).call(this);
+
+</script>
+<div class="fluid-container" data-ng-controller="GroupListCtrl">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading clear-fix">
+          <%= link_to content_tag(:i, nil, {class: 'glyphicon glyphicon-plus-sign'}), new_group_path, class: 'pull-right' %>
+
+          <h3 class="panel-title">Groups</h3>
+        </div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Active</th>
+      <th>First</th>
+      <th>Last</th>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @groups.each do |group| %>
+      <tr>
+        <td>
+          <input type="checkbox" <%= group.active == true ? "checked=checked" : "" %> data-group-id="<%= group.id %>" data-ng-click="setGroupState(<%= group.id %>, <%= group.active.to_s %>, $event)" />
+<!-- <%= group.active == true ? tag('i', class: 'glyphicon glyphicon-ok') : '' %> -->
+        </td>
+        <td><%= group.first %></td>
+        <td><%= group.last %></td>
+        <td><%= group.name %></td>
+        <td><%= link_to tag('i', class: 'glyphicon glyphicon-eye-open'), group %></i></td>
+        <td><%= link_to tag('i', class: 'glyphicon glyphicon-pencil'), edit_group_path(group) %></td>
+        <td><%= link_to tag('i', class: 'glyphicon glyphicon-trash'), group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+
+        <div class="panel-footer">
+<%= link_to 'New Group', new_group_path %>
+        </div>
+      </div>
+    </div>
+</div>

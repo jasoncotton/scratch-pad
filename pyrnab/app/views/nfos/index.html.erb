@@ -1,0 +1,30 @@
+<% 
+# encoding: utf-8
+%>
+<h1>Listing nfos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Data</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @nfos.each do |nfo| %>
+      <tr>
+        <td><%= nfo.id %></td>
+        <td><%= nfo.data.encoding.name %></td>
+        <td><%= link_to 'Show', nfo %></td>
+        <td><%= link_to 'Edit', edit_nfo_path(nfo) %></td>
+        <td><%= link_to 'Destroy', nfo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Nfo', new_nfo_path %>
