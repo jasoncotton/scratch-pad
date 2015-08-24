@@ -102,8 +102,7 @@ sub parse_expression($)
     {
         push @stack, Node->new($collector);
     }
-    print Data::Dumper::Dumper(build_tree(\@stack));
-    return @stack;
+    return build_tree(\@stack);
 }
 
 sub rebuild_expression($)
@@ -116,30 +115,29 @@ sub rebuild_expression($)
     $node = $root;
     while (defined $node)
     {
+        if ($node->is_operand() && $node->parent() && $node->parent()->order() < $node->order())
+        {
+            $expression .= "(" . rebuild_expression($node->clone()) . ")";
+            last;
+        }
+
         if ($node->left())
         {
             $node = $node->left();
         }
-        elsif ($node->right())
-        {
-            # The way this code is written, we never have a right node without a left node.
-            # Nothing happens at this point.
-        }
         else
         {
             $expression .= $node->value();
-            if ($node->parent() && $node->parent()->right())
+            $expression .= $node->parent()->value();
+            $node = $node->parent()->right();
+            if (!$node->left())
             {
-                $expression .= $node->parent()->value();
-                $node = $node->parent()->right();
-            }
-            else
-            {
+                $expression .= $node->value();
                 last;
             }
         }
     }
-    print "Expression: " . $expression;
+    return $expression;
 }
 
 # function removes any unneeded parens.  Means we need to parse the data by order of operations to determine
@@ -156,10 +154,25 @@ sub f($)
     my $collector = "";
     my @stack = ();
 
-    rebuild_expression parse_expression($altered);
+    $altered = rebuild_expression parse_expression($altered);
+    print $altered . "\n";
+    return $altered;
 }
 
 f("1*(2+(3*(4+5)))");
+print "Welcome to my command loop! Enter in an expression and this program will attempt to remove any unneeded parentheses.\nType 'quit' or 'exit' to quit\n";
+print "Enter an expression:\n";
+while(<STDIN>)
+{
+    chomp;
+    if ($_ eq 'quit' || $_ eq 'exit')
+    {
+       last;
+    }
+    print "The result was : ";
+    f($_);
+    print "Enter an expression (exit/quit to exit):\n";
+};
 
 
 package Node;
@@ -210,6 +223,18 @@ sub is_operand
     return $self->{is_operand} == 1;
 }
 
+sub order
+{
+     my $self = shift;
+     return $self->{order};
+}
+
+sub value
+{
+    my $self = shift;
+    return $self->{value};
+}
+
 sub parent
 {
     my $self = shift;
@@ -243,6 +268,21 @@ sub right
     }
     $self->{right} = $rightRef;
     $rightRef->parent($self);
+}
+
+sub clone
+{
+    my $self = shift;
+    my $clone = Node->new($self->value());
+    if ($self->left())
+    {
+        $clone->left($self->left()->clone());
+    }
+    if ($self->right())
+    {
+        $clone->right($self->right()->clone());
+    }
+    return $clone;
 }
 
 1;
