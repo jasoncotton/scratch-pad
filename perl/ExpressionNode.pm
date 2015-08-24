@@ -20,7 +20,8 @@ sub _initialize($)
     $self->{value} = shift;
     $self->{is_operand} = 0;
     $self->{order} = undef;
-    if ($self->{value} =~ m/[\*\/\+\-]/)
+    $self->{traversals} = 0;
+    if ($self->{value} =~ m/^[\*\/\+\-]$/)
     {
         $self->{is_operand} = 1;
         if ($self->{value} eq '*')
@@ -46,6 +47,18 @@ sub is_operand
 {
     my $self = shift;
     return $self->{is_operand} == 1;
+}
+
+sub traverse
+{
+    my $self = shift;
+    $self->{traversals}++;
+}
+
+sub get_traversals
+{
+    my $self = shift;
+    return $self->{traversals};
 }
 
 sub order

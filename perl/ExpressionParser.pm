@@ -45,7 +45,6 @@ sub build_tree($)
         }
     }
 
-print "Tree: " . Data::Dumper::Dumper($root);
     return $root;
 }
 
@@ -74,7 +73,10 @@ sub parse_expression($)
                     next;
                 }
             }
-            push @stack, ExpressionNode->new($collector);
+            if ($collector && $collector ne "")
+            {
+                push @stack, ExpressionNode->new($collector);
+            }
             push @stack, ExpressionNode->new($c_string);
             $collector = "";
             $last_was_operand = 1;
@@ -91,7 +93,7 @@ sub parse_expression($)
 
             push @stack, $ret->{'root'};
             $index += $ret->{'processed'};
-
+            $last_was_operand = 0;
             next;
         }
         if ($c_string eq ')')
@@ -103,6 +105,7 @@ sub parse_expression($)
             return { 'stack' => \@stack, 'processed' => $index, 'root' => build_tree(\@stack) };
         }
         $collector .= $c_string;
+        $last_was_operand = 0;
     }
 
     # need to do some checking here to see if there's an edge case not caught.
@@ -117,33 +120,48 @@ sub rebuild_expression($)
 {
     my $root = shift;
     my $node;
-    my $i;
     my $expression = "";
 
     $node = $root;
-    while (defined $node)
-    {
-        if ($node->is_operand() && $node->parent() && $node->parent()->order() < $node->order())
+        if ($node->is_operand())
         {
-            $expression .= "(" . rebuild_expression($node->clone()) . ")";
-            last;
-        }
-
-        if ($node->left())
-        {
-            $node = $node->left();
-        }
-        else
-        {
-            $expression .= $node->value();
-            $expression .= $node->parent()->value();
-            $node = $node->parent()->right();
-            if (!$node->left())
+            if ($node->left()->is_operand())
             {
-                $expression .= $node->value();
-                last;
+                if ($node->order() < $node->left()->order())
+                {
+                    $expression .= "(" . rebuild_expression($node->left()) . ")";
+                }
+                else
+                {
+                    $expression .= rebuild_expression($node->left());
+                }
+            }
+            else
+            {
+                $expression .= $node->left()->value();
+            }
+
+            $expression .= $node->value();
+
+            if ($node->right()->is_operand())
+            {
+                if ($node->order() < $node->right()->order())
+                {
+                    $expression .= "(" . rebuild_expression($node->right()) . ")";
+                }
+                else
+                {
+                    $expression .= rebuild_expression($node->right());
+                }
+            }
+            else
+            {
+                $expression .= $node->right()->value();
             }
         }
+    else
+    {
+        $expression .= $node->value();
     }
     return $expression;
 }
