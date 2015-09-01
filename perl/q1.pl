@@ -23,7 +23,7 @@ sub has_number($)
 sub has_symbol($)
 {
   my $input = shift;
-  return $input =~ m/[!\@#\$%^&*()=+_;:'"\[\]\{\}\\|,<\.>\/\?`~-]/;
+  return $input =~ m/[!\@\#\$%^&*()=+_;:'"\[\]\{\}\\|,<\.>\/\?`~-]/;
 }
 
 sub is_valid_password($)
