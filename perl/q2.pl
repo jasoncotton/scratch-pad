@@ -35,6 +35,7 @@ sub parse_expression($)
         }
         if ($c_string eq ')')
         {
+            print "About to return from a sub call : " . Data::Dumper::Dumper(@stack);
             return { 'stack' => \@stack, 'processed' => $index };
         }
         $collector .= $c_string;
