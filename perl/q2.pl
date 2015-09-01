@@ -17,7 +17,7 @@ sub parse_expression($)
     {
         my $c_string = substr $input, $index++, 1;
 
-        if ($c_string =~ m/\*\/\+\-/)
+        if ($c_string =~ m/[\*\/\+\-]/)
         {
             push @stack, $collector;
             push @stack, $c_string;
