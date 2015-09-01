@@ -28,18 +28,21 @@ sub parse_expression($)
         {
             my $substring = substr($input, ($index));
             my $ret = parse_expression($substring);
-            print Data::Dumper::Dumper($ret);
+
             push @stack, $ret->{'stack'};
             $index += $ret->{'processed'};
+
             next;
         }
         if ($c_string eq ')')
         {
-            print "About to return from a sub call : " . Data::Dumper::Dumper(@stack);
+            push @stack, $collector;
             return { 'stack' => \@stack, 'processed' => $index };
         }
         $collector .= $c_string;
     }
+
+    # need to do some checking here to see if there's an edge ccase not caught.
 }
 
 # function removes any unneeded parens.  Means we need to parse the data by order of operations to determine
