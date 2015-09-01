@@ -1,6 +1,8 @@
 #!/usr/bin/perl
-
+use strict;
 use Data::Dumper;
+
+local $| = 1;
 
 sub parse_expression($)
 {
