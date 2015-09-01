@@ -40,7 +40,7 @@ sub parse_expression($)
         }
         if ($c_string eq '(')
         {
-            my $ret = parse_expression(substr($input, $index));
+            my $ret = parse_expression(substr($input, ($index + 1)));
             print Data::Dumper($ret);
             push @stack, $ret->{'stack'};
             $index += $ret->{'processed'};
