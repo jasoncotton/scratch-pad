@@ -21,6 +21,7 @@ sub parse_expression($)
         {
             push @stack, $collector;
             push @stack, $c_string;
+            $collector = "";
             next;
         }
         if ($c_string eq '(')
@@ -34,7 +35,7 @@ sub parse_expression($)
         }
         if ($c_string eq ')')
         {
-            return { 'stack' => @stack, 'processed' => $index };
+            return { 'stack' => \@stack, 'processed' => $index };
         }
         $collector .= $c_string;
     }
