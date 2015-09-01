@@ -40,6 +40,31 @@ sub parse_expression($)
         if ($c_string eq ')')
         {
             push @stack, $collector;
+            my $root;
+            foreach my $el (@stack)
+            {
+                my $node = Node->new($el);
+                if (!$root)
+                {
+                    $root = $node;
+                }
+                elsif ($node->is_operand() && $root->is_operand())})
+                {
+                    # node is an operand and root is an operand.
+                    if ()
+                }
+                else
+                {
+                    if (defined $root->left())
+                    {
+                        $root->right($node);
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
             return { 'stack' => \@stack, 'processed' => $index };
         }
         $collector .= $c_string;
@@ -120,6 +145,12 @@ sub _initialize($)
             $self->{order} = 3;
         }
     }
+}
+
+sub is_operand
+{
+    my $self = shift;
+    return $self->{is_operand} == 1;
 }
 
 sub parent
