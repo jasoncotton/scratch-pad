@@ -94,12 +94,12 @@ sub new
 sub _initialize($)
 {
     my $self = shift;
-    $self->{parent} = null;
-    $self->{left} = null;
-    $self->{right} = null;
+    $self->{parent} = undef;
+    $self->{left} = undef;
+    $self->{right} = undef;
     $self->{value} = shift;
     $self->{is_operand} = 0;
-    $self->{order} = null;
+    $self->{order} = undef;
     if ($self->{value} =~ m/[\*\/\+\-]/)
     {
         $self->{is_operand} = 1;
