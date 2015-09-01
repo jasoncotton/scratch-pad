@@ -26,6 +26,9 @@ sub parse_expression($)
         }
         if ($c_string eq '(')
         {
+
+            # should not be able to reach this point with anything in the collector.
+
             my $substring = substr($input, ($index));
             my $ret = parse_expression($substring);
 
@@ -43,6 +46,11 @@ sub parse_expression($)
     }
 
     # need to do some checking here to see if there's an edge ccase not caught.
+    if ($collector ne "")
+    {
+        push @stack, $collector;
+    }
+    return @stack;
 }
 
 # function removes any unneeded parens.  Means we need to parse the data by order of operations to determine
@@ -60,7 +68,7 @@ sub f($)
     my @stack = ();
 
     print "about to parse string: $altered\n";
-    parse_expression($altered);
+    print Data::Dumper::Dumper(parse_expression($altered));
 }
 
 
