@@ -23,7 +23,7 @@ sub f($)
 sub parse_expression($)
 {
     my $input = shift;
-    print "inside of prase_expression: $input "
+    print "inside of prase_expression: $input ";
     my $length = length $input;
     my @stack = ();
     my $index = 0;
