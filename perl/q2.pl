@@ -7,7 +7,7 @@ local $| = 1;
 sub parse_expression($)
 {
     my $input = shift;
-    print "inside of prase_expression: $input ";
+    print "inside of parse_expression: $input\n";
     my $length = length $input;
     my @stack = ();
     my $index = 0;
@@ -15,7 +15,8 @@ sub parse_expression($)
 
     while ($index < $length)
     {
-        my $c_string = substr $input, $index, 1;
+        my $c_string = substr $input, $index++, 1;
+
         if ($c_string =~ m/\*\/\+\-/)
         {
             push @stack, $collector;
@@ -24,7 +25,7 @@ sub parse_expression($)
         }
         if ($c_string eq '(')
         {
-            my $substring = substr($input, ($index + 1));
+            my $substring = substr($input, ($index));
             my $ret = parse_expression($substring);
             print Data::Dumper($ret);
             push @stack, $ret->{'stack'};
@@ -53,7 +54,7 @@ sub f($)
     my $collector = "";
     my @stack = ();
 
-    print "about to parse string: $altered";
+    print "about to parse string: $altered\n";
     parse_expression($altered);
 }
 
