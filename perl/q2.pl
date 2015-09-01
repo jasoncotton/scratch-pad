@@ -16,12 +16,14 @@ sub f($)
     my $collector = "";
     my @stack = ();
 
+    print "about to parse string: $altered";
     parse_expression($altered);
 }
 
 sub parse_expression($)
 {
     my $input = shift;
+    print "inside of prase_expression: $input "
     my $length = length $input;
     my @stack = ();
     my $index = 0;
