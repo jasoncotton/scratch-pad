@@ -27,7 +27,7 @@ sub parse_expression($)
         {
             my $substring = substr($input, ($index));
             my $ret = parse_expression($substring);
-            print Data::Dumper($ret);
+            print Data::Dumper::Dumper($ret);
             push @stack, $ret->{'stack'};
             $index += $ret->{'processed'};
             next;
