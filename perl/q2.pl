@@ -53,6 +53,12 @@ sub parse_expression($)
     return @stack;
 }
 
+sub build_tree(@)
+{
+    my @stack = shift;
+    my $tree;
+}
+
 # function removes any unneeded parens.  Means we need to parse the data by order of operations to determine
 # what is and isn't needed.
 sub f($)
@@ -68,8 +74,85 @@ sub f($)
     my @stack = ();
 
     print "about to parse string: $altered\n";
-    print Data::Dumper::Dumper(parse_expression($altered));
+    build_tree parse_expression($altered);
 }
 
-
 f("1*(2+(3*(4+5)))");
+
+
+package Node;
+sub new
+{
+    my $class = shift;
+    my $value = shift;
+    my $self = {};
+    bless $self, $class;
+    $self->_initialize($value);
+    return $self;
+}
+
+sub _initialize($)
+{
+    my $self = shift;
+    $self->{parent} = null;
+    $self->{left} = null;
+    $self->{right} = null;
+    $self->{value} = shift;
+    $self->{is_operand} = 0;
+    $self->{order} = null;
+    if ($self->{value} =~ m/[\*\/\+\-]/)
+    {
+        $self->{is_operand} = 1;
+        if ($self->{value} eq '*')
+        {
+            $self->{order} = 0;
+        }
+        if ($self->{value} eq '/')
+        {
+            $self->{order} = 1;
+        }
+        if ($self->{value} eq '+')
+        {
+            $self->{order} = 2;
+        }
+        if ($self->{value} eq '-')
+        {
+            $self->{order} = 3;
+        }
+    }
+}
+
+sub parent
+{
+    my $self = shift;
+    my $parentRef = shift;
+    if (!$parentRef)
+    {
+        return $self->{parent};
+    }
+    $self->{parent} = $parentRef;
+}
+
+sub left
+{
+    my $self = shift;
+    my $leftRef = shift;
+    if (!$leftRef)
+    {
+        return $self->{left};
+    }
+    $self->{left} = $leftRef;
+}
+
+sub right
+{
+    my $self = shift;
+    my $rightRef = shift;
+    if (!$rightRef)
+    {
+        return $self->{right};
+    }
+    $self->{right} = $rightRef;
+}
+
+1;
