@@ -45,7 +45,7 @@ sub f($)
 {
     my $input = shift;
     my $altered = $input;
-
+    print "f() called: $input"
     # Clean up the string before processing
     $altered =~ s/\w//g;
     my $altered_length = length $altered;
