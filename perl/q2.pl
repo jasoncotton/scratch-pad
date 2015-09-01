@@ -22,7 +22,8 @@ sub parse_expression($)
         }
         if ($c_string eq '(')
         {
-            my $ret = parse_expression(substr($input, ($index + 1)));
+            my $substring = substr($input, ($index + 1));
+            my $ret = parse_expression($substring);
             print Data::Dumper($ret);
             push @stack, $ret->{'stack'};
             $index += $ret->{'processed'};
