@@ -47,7 +47,7 @@ sub f($)
     my $altered = $input;
     print "f() called: $input"
     # Clean up the string before processing
-    $altered =~ s/\w//g;
+    $altered =~ s/\s//g;
     my $altered_length = length $altered;
     my $i = 0;
     my $collector = "";
