@@ -2,24 +2,6 @@
 
 use Data::Dumper;
 
-# function removes any unneeded parens.  Means we need to parse the data by order of operations to determine
-# what is and isn't needed.
-sub f($)
-{
-    my $input = shift;
-    my $altered = $input;
-
-    # Clean up the string before processing
-    $altered =~ s/\w//g;
-    my $altered_length = length $altered;
-    my $i = 0;
-    my $collector = "";
-    my @stack = ();
-
-    print "about to parse string: $altered";
-    parse_expression($altered);
-}
-
 sub parse_expression($)
 {
     my $input = shift;
@@ -53,5 +35,24 @@ sub parse_expression($)
         $collector .= $c_string;
     }
 }
+
+# function removes any unneeded parens.  Means we need to parse the data by order of operations to determine
+# what is and isn't needed.
+sub f($)
+{
+    my $input = shift;
+    my $altered = $input;
+
+    # Clean up the string before processing
+    $altered =~ s/\w//g;
+    my $altered_length = length $altered;
+    my $i = 0;
+    my $collector = "";
+    my @stack = ();
+
+    print "about to parse string: $altered";
+    parse_expression($altered);
+}
+
 
 f("1*(2+(3*(4+5)))");
