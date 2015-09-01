@@ -34,7 +34,7 @@ sub parse_expression($)
         }
         if ($c_string eq ')')
         {
-            return { 'stack' => \@stack, 'processed' => $index };
+            return { 'stack' => @stack, 'processed' => $index };
         }
         $collector .= $c_string;
     }
