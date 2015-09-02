@@ -6,13 +6,13 @@ local $| = 1;
 
 sub build_tree(@)
 {
-    my @stack = @{shift};
+    my @stack = shift;
     my $root;
     my $i = scalar(@stack);
 
     while ($i--)
     {
-        my $node = @stack[$i];
+        my $node = $stack[$i];
 
         if (defined $root)
         {
