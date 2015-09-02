@@ -91,6 +91,7 @@ sub right
     {
         return $self->{right};
     }
+print ref($rightRef);
     $self->{right} = $rightRef;
     $rightRef->parent($self);
 }

@@ -18,11 +18,10 @@ sub f($)
     my @stack = ();
 
     $altered = ExpressionParser::remove_unneeded_parentheses($altered);
-    print $altered . "\n";
+    print "original: \"" . $input . "\" and with parentheses removed: \"" . $altered . "\"\n";
     return $altered;
 }
 
-f("1*(2+(3*(4+5)))");
 print "Welcome to my command loop! Enter in an expression and this program will attempt to remove any unneeded parentheses.\nType 'quit' or 'exit' to quit\n";
 print "Enter an expression:\n";
 while(<STDIN>)
