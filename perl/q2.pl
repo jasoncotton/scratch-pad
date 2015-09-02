@@ -4,16 +4,18 @@ use Data::Dumper;
 
 local $| = 1;
 
-sub build_tree(@)
+sub build_tree($)
 {
-    my @stack = shift;
+    my $stackRef = shift;
+    my @stack = @$stackRef;
     my $root;
     my $i = scalar(@stack);
 
     while ($i--)
     {
         my $node = @stack[$i];
-print Data::Dumper::Dumper($node);
+print "node: ".Data::Dumper::Dumper($node->left());
+print "node: ".Data::Dumper::Dumper($node);
 
         if (defined $root)
         {
