@@ -7,6 +7,7 @@ local $| = 1;
 sub build_tree(@)
 {
     my @stack = shift;
+print "build_tree received: " . Data::Dumper::Dumper(@stack);
     my $root;
     my $i = scalar(@stack);
 
