@@ -151,7 +151,7 @@ sub rebuild_expression($)
 
 sub remove_unneeded_parentheses($)
 {
-    return rebuild_expression(parse_expression($altered));
+    return rebuild_expression(parse_expression(shift));
 }
 
 1;
