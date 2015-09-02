@@ -89,7 +89,7 @@ sub parse_expression($)
         if ($c_string eq ')')
         {
             push @stack, Node->new($collector);
-            return { 'stack' => \@stack, 'processed' => $index, 'root' => build_tree(@stack) };
+            return { 'stack' => \@stack, 'processed' => $index, 'root' => build_tree(\@stack) };
         }
         $collector .= $c_string;
     }
