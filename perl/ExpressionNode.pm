@@ -79,8 +79,13 @@ sub left
     {
         return $self->{left};
     }
+    if (ref($leftRef) ne 'ExpressionNode')
+    {
+        $leftRef = ExpressionNode->new($leftRef);
+    }
     $self->{left} = $leftRef;
     $leftRef->parent($self);
+
 }
 
 sub right
@@ -91,7 +96,10 @@ sub right
     {
         return $self->{right};
     }
-print ref($rightRef);
+    if (ref($rightRef) ne 'ExpressionNode')
+    {
+        $rightRef = ExpressionNode->new($rightRef);
+    }
     $self->{right} = $rightRef;
     $rightRef->parent($self);
 }
