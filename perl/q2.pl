@@ -6,7 +6,7 @@ local $| = 1;
 
 sub build_tree(@)
 {
-    my @stack = shift;
+    my @stack = @{shift};
     my $root;
     my $i = scalar(@stack);
 
