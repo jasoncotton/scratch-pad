@@ -103,6 +103,42 @@ sub parse_expression($)
     return @stack;
 }
 
+sub rebuild_expression($)
+{
+    my $root = shift;
+    my $node;
+    my $i;
+    my $expression = "";
+
+    $node = $root;
+    while (defined $node)
+    {
+        if ($node->left())
+        {
+            $node = $node->left();
+        }
+        elsif ($node->right())
+        {
+            # The way this code is written, we never have a right node without a left node.
+            # Nothing happens at this point.
+        }
+        else
+        {
+            $expression .= $node->value();
+            if ($node->parent() && $node->parent()->right())
+            {
+                $expression .= $node->parent()->value();
+                $node = $node->parent()->right();
+            }
+            else
+            {
+                last;
+            }
+        }
+    }
+    print "Expression: " . $expression;
+}
+
 # function removes any unneeded parens.  Means we need to parse the data by order of operations to determine
 # what is and isn't needed.
 sub f($)
@@ -117,7 +153,7 @@ sub f($)
     my $collector = "";
     my @stack = ();
 
-    parse_expression($altered);
+    rebuild_expression parse_expression($altered);
 }
 
 f("1*(2+(3*(4+5)))");
@@ -191,6 +227,7 @@ sub left
         return $self->{left};
     }
     $self->{left} = $leftRef;
+    $leftRef->parent($self);
 }
 
 sub right
@@ -202,6 +239,7 @@ sub right
         return $self->{right};
     }
     $self->{right} = $rightRef;
+    $rightRef->parent($self);
 }
 
 1;
