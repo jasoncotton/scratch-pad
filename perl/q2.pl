@@ -4,6 +4,43 @@ use Data::Dumper;
 
 local $| = 1;
 
+sub build_tree(@)
+{
+    my @stack = shift;
+    my $root;
+    my $i = scalar(@stack);
+
+    while ($i--)
+    {
+        my $node = @stack[$i];
+
+        if (defined $root)
+        {
+            if (defined $root->left() && defined $root->right())
+            {
+                $node->right($root);
+                $root = $node;
+            }
+            elsif (defined $root->right())
+            {
+                $root->left($node);
+            }
+            else
+            {
+                # if we are in a leaf node (first run through) then presume that root shouldn't be root
+                $node->right($root);
+                $root = $node;
+            }
+        }
+        else
+        {
+            $root = $node;
+        }
+    }
+
+    return $root;
+}
+
 sub parse_expression($)
 {
     my $input = shift;
@@ -13,6 +50,7 @@ sub parse_expression($)
     my $index = 0;
     my $collector = "";
     my $last_was_operand = undef;
+    my $tree;
 
     while ($index < $length)
     {
@@ -29,75 +67,40 @@ sub parse_expression($)
                     next;
                 }
             }
-            push @stack, $collector;
-            push @stack, $c_string;
+            push @stack, Node->new($collector);
+            push @stack, Node->new($c_string);
             $collector = "";
             $last_was_operand = 1;
             next;
         }
         if ($c_string eq '(')
         {
-
             # should not be able to reach this point with anything in the collector.
 
             my $substring = substr($input, ($index));
             my $ret = parse_expression($substring);
 
-            push @stack, $ret->{'stack'};
+            push @stack, $ret->{'root'};
             $index += $ret->{'processed'};
 
             next;
         }
         if ($c_string eq ')')
         {
-            push @stack, $collector;
-            my $root;
-            my $i = scalar(@stack);
-
-            while ($i--)
-            {
-                my $node = Node->new(@stack[$i]);
-
-                if (defined $root)
-                {
-                    if (defined $root->left() && defined $root->right())
-                    {
-                        $node->right($root);
-                        $root = $node;
-                    }
-                    elsif (defined $root->right())
-                    {
-                        $root->left($node);
-                    }
-                    else
-                    {
-                        # if we are in a leaf node (first run through) then presume that root shouldn't be root
-                        $node->right($root);
-                        $root = $node;
-                    }
-                }
-                else
-                {
-                    $root = $node;
-                }
-            }
-            return { 'stack' => \@stack, 'processed' => $index, 'tree' => $root };
+            push @stack, Node->new($collector);
+            return { 'stack' => \@stack, 'processed' => $index, 'root' => build_tree(@stack) };
         }
         $collector .= $c_string;
     }
 
-    # need to do some checking here to see if there's an edge ccase not caught.
+    # need to do some checking here to see if there's an edge case not caught.
     if ($collector ne "")
     {
-        push @stack, $collector;
+        push @stack, Node->new($collector);
     }
-    return @stack;
-}
 
-sub build_tree(@)
-{
-    my @stack = shift;
-    my $tree;
+    print Data::Dumper::Dumper(build_tree(@stack));
+    return @stack;
 }
 
 # function removes any unneeded parens.  Means we need to parse the data by order of operations to determine
