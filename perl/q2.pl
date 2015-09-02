@@ -88,7 +88,10 @@ sub parse_expression($)
         }
         if ($c_string eq ')')
         {
-            push @stack, Node->new($collector);
+            if ($collector && $collector ne "")
+            {
+                push @stack, Node->new($collector);
+            }
             return { 'stack' => \@stack, 'processed' => $index, 'root' => build_tree(\@stack) };
         }
         $collector .= $c_string;
@@ -222,7 +225,7 @@ sub left
 {
     my $self = shift;
     my $leftRef = shift;
-    if (!$leftRef)
+    if (!(defined $leftRef))
     {
         return $self->{left};
     }
@@ -234,7 +237,7 @@ sub right
 {
     my $self = shift;
     my $rightRef = shift;
-    if (!$rightRef)
+    if (!(defined $rightRef))
     {
         return $self->{right};
     }
