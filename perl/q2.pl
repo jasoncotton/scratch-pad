@@ -7,7 +7,6 @@ local $| = 1;
 sub build_tree(@)
 {
     my @stack = shift;
-print "build_tree received: " . Data::Dumper::Dumper(@stack);
     my $root;
     my $i = scalar(@stack);
 
@@ -99,8 +98,8 @@ sub parse_expression($)
     {
         push @stack, Node->new($collector);
     }
-
-    print Data::Dumper::Dumper(build_tree(@stack));
+    print "This should be the end of things: \n";
+    print Data::Dumper::Dumper(build_tree(\@stack));
     return @stack;
 }
 
@@ -118,8 +117,7 @@ sub f($)
     my $collector = "";
     my @stack = ();
 
-    print "about to parse string: $altered\n";
-    build_tree parse_expression($altered);
+    parse_expression($altered);
 }
 
 f("1*(2+(3*(4+5)))");
