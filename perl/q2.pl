@@ -14,6 +14,7 @@ print "build_tree received: " . Data::Dumper::Dumper(@stack);
     while ($i--)
     {
         my $node = $stack[$i];
+print Data::Dumper::Dumper($node);
 
         if (defined $root)
         {
@@ -38,7 +39,6 @@ print "build_tree received: " . Data::Dumper::Dumper(@stack);
             $root = $node;
         }
     }
-print Data::Dumper::Dumper($root);
     return $root;
 }
 
