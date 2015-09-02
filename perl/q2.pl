@@ -12,6 +12,7 @@ sub parse_expression($)
     my @stack = ();
     my $index = 0;
     my $collector = "";
+    my $last_was_operand = undef;
 
     while ($index < $length)
     {
@@ -19,9 +20,19 @@ sub parse_expression($)
 
         if ($c_string =~ m/[\*\/\+\-]/)
         {
+            if (defined $last_was_operand && $last_was_operand || !(defined $last_was_operand))
+            {
+                # if we encounter an operand before anything else or the last thing was an operand, assume that this thing is a negative sign
+                if ($c_string eq '-')
+                {
+                    $collector .= $c_string;
+                    next;
+                }
+            }
             push @stack, $collector;
             push @stack, $c_string;
             $collector = "";
+            $last_was_operand = 1;
             next;
         }
         if ($c_string eq '(')
@@ -48,10 +59,9 @@ sub parse_expression($)
                 {
                     $root = $node;
                 }
-                elsif ($node->is_operand() && $root->is_operand())})
+                elsif ($node->is_operand() && $root->is_operand())
                 {
                     # node is an operand and root is an operand.
-                    if ()
                 }
                 else
                 {
