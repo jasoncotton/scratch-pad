@@ -52,30 +52,36 @@ sub parse_expression($)
         {
             push @stack, $collector;
             my $root;
-            foreach my $el (@stack)
+            my $i = scalar(@stack);
+
+            while ($i--)
             {
-                my $node = Node->new($el);
-                if (!$root)
+                my $node = Node->new(@stack[$i]);
+
+                if (defined $root)
                 {
-                    $root = $node;
-                }
-                elsif ($node->is_operand() && $root->is_operand())
-                {
-                    # node is an operand and root is an operand.
-                }
-                else
-                {
-                    if (defined $root->left())
+                    if (defined $root->left() && defined $root->right())
                     {
-                        $root->right($node);
+                        $node->right($root);
+                        $root = $node;
+                    }
+                    elsif (defined $root->right())
+                    {
+                        $root->left($node);
                     }
                     else
                     {
-
+                        # if we are in a leaf node (first run through) then presume that root shouldn't be root
+                        $node->right($root);
+                        $root = $node;
                     }
                 }
+                else
+                {
+                    $root = $node;
+                }
             }
-            return { 'stack' => \@stack, 'processed' => $index };
+            return { 'stack' => \@stack, 'processed' => $index, 'tree' => $root };
         }
         $collector .= $c_string;
     }
