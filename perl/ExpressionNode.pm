@@ -7,6 +7,7 @@ sub new
     my $self = {};
     bless $self, $class;
     $self->_initialize($value);
+    $self->{class} = $class;
     return $self;
 }
 
@@ -97,7 +98,7 @@ sub right
 sub clone
 {
     my $self = shift;
-    my $clone = Node->new($self->value());
+    my $clone = ExpressionNode->new($self->value());
     if ($self->left())
     {
         $clone->left($self->left()->clone());

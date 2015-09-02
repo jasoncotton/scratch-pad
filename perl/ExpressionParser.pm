@@ -50,9 +50,6 @@ sub build_tree($)
 sub parse_expression($)
 {
     my $input = shift;
-
-    print Data::Dumper::Dumper($input);
-
     my $length = length $input;
     my @stack = ();
     my $index = 0;
