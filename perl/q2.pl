@@ -14,8 +14,6 @@ sub build_tree($)
     while ($i--)
     {
         my $node = @stack[$i];
-print "node: ".Data::Dumper::Dumper($node->left());
-print "node: ".Data::Dumper::Dumper($node);
 
         if (defined $root)
         {
@@ -46,7 +44,6 @@ print "node: ".Data::Dumper::Dumper($node);
 sub parse_expression($)
 {
     my $input = shift;
-    print "inside of parse_expression: $input\n";
     my $length = length $input;
     my @stack = ();
     my $index = 0;
@@ -78,6 +75,8 @@ sub parse_expression($)
         if ($c_string eq '(')
         {
             # should not be able to reach this point with anything in the collector.
+            # clear it anyways
+            $collector = "";
 
             my $substring = substr($input, ($index));
             my $ret = parse_expression($substring);
@@ -96,11 +95,10 @@ sub parse_expression($)
     }
 
     # need to do some checking here to see if there's an edge case not caught.
-    if ($collector ne "")
+    if ($collector && $collector ne "")
     {
         push @stack, Node->new($collector);
     }
-    print "This should be the end of things: \n";
     print Data::Dumper::Dumper(build_tree(\@stack));
     return @stack;
 }
