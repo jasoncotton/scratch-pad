@@ -1,3 +1,5 @@
+require 'ExpressionNode.pm';
+
 package ExpressionParser;
 
 sub build_tree($)

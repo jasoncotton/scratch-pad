@@ -1,9 +1,6 @@
 #!/usr/bin/perl
 use strict;
-use Data::Dumper;
-require 'ExpressionNode';
-require 'ExpressionParser';
-
+require 'ExpressionParser.pm';
 local $| = 1;
 
 # function removes any unneeded parens.  Means we need to parse the data by order of operations to determine
