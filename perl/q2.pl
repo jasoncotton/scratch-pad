@@ -37,7 +37,7 @@ sub build_tree(@)
             $root = $node;
         }
     }
-
+print Data::Dumper::Dumper($root);
     return $root;
 }
 
