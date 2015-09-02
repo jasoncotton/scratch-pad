@@ -18,7 +18,7 @@ sub f($)
     my @stack = ();
 
     $altered = ExpressionParser::remove_unneeded_parentheses($altered);
-    print "original: \"" . $input . "\" and with parentheses removed: \"" . $altered . "\"\n";
+    print "Original input: \"" . $input . "\" and with parentheses removed: \"" . $altered . "\"\n";
     return $altered;
 }
 
@@ -31,7 +31,6 @@ while(<STDIN>)
     {
        last;
     }
-    print "The result was : ";
     f($_);
     print "Enter an expression (exit/quit to exit):\n";
 };
