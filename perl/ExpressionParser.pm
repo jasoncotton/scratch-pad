@@ -1,6 +1,14 @@
-require 'ExpressionNode.pm';
-
 package ExpressionParser;
+
+use strict;
+use Exporter;
+require 'ExpressionNode.pm';
+use Data::Dumper;
+
+use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
+
+@EXPORT = ();
+@EXPORT_OK = qw(remove_unneeded_parentheses);
 
 sub build_tree($)
 {
@@ -42,6 +50,9 @@ sub build_tree($)
 sub parse_expression($)
 {
     my $input = shift;
+
+    print Data::Dumper::Dumper($input);
+
     my $length = length $input;
     my @stack = ();
     my $index = 0;
