@@ -13,7 +13,7 @@ print "build_tree received: " . Data::Dumper::Dumper(@stack);
 
     while ($i--)
     {
-        my $node = $stack[$i];
+        my $node = @stack[$i];
 print Data::Dumper::Dumper($node);
 
         if (defined $root)
