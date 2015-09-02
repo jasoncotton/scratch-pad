@@ -13,7 +13,7 @@ sub build_tree($)
 
     while ($i--)
     {
-        my $node = @stack[$i];
+        my $node = $stack[$i];
 
         if (defined $root)
         {
